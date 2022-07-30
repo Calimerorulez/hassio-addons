@@ -122,8 +122,7 @@ FROM env-builder as docs-builder
 
 # Install Sphinx
 RUN /venv/bin/python3 -m pip install --no-cache-dir sphinx
-RUN /venv/bin/python3 -m pip uninstall jinja2
-RUN /venv/bin/python3 -m pip install --no-cache-dir jinja2==2.0.3
+
 
 # Copy the docs from the local tree. Explicitly remove any existing builds that
 # may be present
@@ -227,6 +226,10 @@ RUN apk add \
     chown pgadmin:pgadmin /pgadmin4/config_distro.py && \
     setcap CAP_NET_BIND_SERVICE=+eip /usr/bin/python3.9 && \
     echo "pgadmin ALL = NOPASSWD: /usr/sbin/postfix start" > /etc/sudoers.d/postfix
+
+RUN /venv/bin/python3 -m pip uninstall jinja2
+RUN /venv/bin/python3 -m pip install --no-cache-dir jinja2==2.0.3
+
 
 # Install NGINX for Ingress support
 RUN \
