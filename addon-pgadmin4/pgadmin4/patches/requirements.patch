@@ -7,3 +7,4 @@ index 0a6471ea8..e6da55f6d 100644
  botocore==1.23.*
  urllib3==1.26.*
 +werkzeug~=2.0.0
++jinja2==3.0.3
