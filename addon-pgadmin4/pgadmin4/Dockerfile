@@ -122,6 +122,8 @@ FROM env-builder as docs-builder
 
 # Install Sphinx
 RUN /venv/bin/python3 -m pip install --no-cache-dir sphinx
+RUN /venv/bin/python3 -m pip uninstall jinja2
+RUN /venv/bin/python3 -m pip install --no-cache-dir jinja2==3.0.3
 
 # Copy the docs from the local tree. Explicitly remove any existing builds that
 # may be present
