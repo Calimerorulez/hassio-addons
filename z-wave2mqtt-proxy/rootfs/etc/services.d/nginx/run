@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bashio
 # ==============================================================================
-# Runs the NGINX daemon
+# Runs the Nginx daemon
 # ==============================================================================
 
-bashio::log.info "Starting NGINX..."
+bashio::log.info "Starting NGinx..."
 exec nginx
