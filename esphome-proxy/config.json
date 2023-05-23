@@ -1,6 +1,6 @@
 {
     "name": "ESPHome Proxy",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "slug": "esphome_proxy",
     "description": "Proxy for externally running ESPHome",
     "url": "https://github.com/Calimerorulez/hassio-addons/tree/master/esphome-proxy",
