@@ -46,8 +46,7 @@ http {
         server_name _;
 
         location / {
-            allow   172.30.32.2;
-            deny    all;
+            allow   all;
 
             set     $target "{{ .server }}";
             set     $token "{{ .auth_token }}";
