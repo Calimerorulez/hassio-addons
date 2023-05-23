@@ -1,0 +1,20 @@
+{
+  "name": "Z-Wave2MQTT Proxy",
+  "version": "1.0.0",
+  "url": "https://github.com/Calimerorulez/hassio-addons/zwave2mqtt-proxy",
+  "panel_icon": "mdi:z-wave",
+  "slug": "zwave2mqtt-proxy",
+  "description": "Proxy for externally hosted Z-Wave2MQTT",
+  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "ingress": true,
+  "ingress_port": 8091,
+  "panel_admin": false,
+  "options": {
+    "server": "zwave2mqtt.local:8091"
+  },
+  "schema": {
+    "server": "match(^.+:\\d+$)"
+  }
+}
