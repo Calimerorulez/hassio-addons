@@ -8,7 +8,8 @@ server {
         deny    all;
 
         proxy_pass http://backend;
-        proxy_set_header X-External-Path /hassio/ingress;
+        proxy_set_header X-Ingress-Path {{ .entry }};
+		proxy_set_header X-External-Path $http_x_ingress_path;
         include /etc/nginx/includes/proxy_params.conf;
     }
 }
