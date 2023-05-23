@@ -1,9 +1,9 @@
 {
   "name": "ESPHome Proxy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "url": "https://github.com/Calimerorulez/hassio-addons/esphome-proxy-new",
   "panel_icon": "mdi:chip",
-  "slug": "exphome-proxy-new",
+  "slug": "esphome-proxy",
   "description": "Proxy for externally hosted ESPHome",
   "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
   "startup": "application",
