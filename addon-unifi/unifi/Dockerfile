@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/ubuntu-base/amd64:8.2.0
+ARG BUILD_FROM=ghcr.io/hassio-addons/ubuntu-base:8.2.0
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -6,35 +6,34 @@ FROM ${BUILD_FROM}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Setup base system
-ARG BUILD_ARCH=amd64
 RUN \
     apt-get update \
-	&& apt-get dist-upgrade \
-	
-RUN \
-    apt-get install -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
         binutils=2.34-6ubuntu1.4 \
         jsvc=1.0.15-8 \
         libcap2=1:2.32-1 \
         logrotate=3.14.0-4ubuntu3 \
         mongodb-server=1:3.6.9+really3.6.8+90~g8e540c0b6d-0ubuntu5.3 \
         openjdk-11-jdk-headless=11.0.18+10-0ubuntu1~20.04.1 \
-		
-RUN \
-    curl -J -L -o /tmp/unifi.deb \
-        "https://dl.ui.com/unifi/7.4.156-6ee9e412d1/unifi_sysvinit_all.deb" \
+    \
+    && curl -J -L -o /tmp/unifi.deb \
+        "https://dl.ui.com/unifi/7.3.83/unifi_sysvinit_all.deb" \
     \
     && dpkg --install /tmp/unifi.deb \
-
-RUN \
-    apt-get clean \
+    && apt-get clean \
     && rm -fr \
         /tmp/* \
-        /var/{cache,log}/* \
-        /var/lib/apt/lists/*
+        /var/cache/* \
+        /var/lib/apt/lists/* \
+        /var/log/*.log \
+        /var/log/apt
 
 # Copy root filesystem
 COPY rootfs /
+
+# Health check
+HEALTHCHECK --start-period=5m \
+    CMD curl --insecure --fail https://localhost:8443 || exit 1
 
 # Build arguments
 ARG BUILD_ARCH
@@ -52,11 +51,11 @@ LABEL \
     io.hass.arch="${BUILD_ARCH}" \
     io.hass.type="addon" \
     io.hass.version=${BUILD_VERSION} \
-    maintainer="Calimerorulez" \
+    maintainer="Franck Nijhof <frenck@addons.community>" \
     org.opencontainers.image.title="${BUILD_NAME}" \
     org.opencontainers.image.description="${BUILD_DESCRIPTION}" \
     org.opencontainers.image.vendor="Home Assistant Community Add-ons" \
-    org.opencontainers.image.authors="Calimerorulez" \
+    org.opencontainers.image.authors="Franck Nijhof <frenck@addons.community>" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.url="https://addons.community" \
     org.opencontainers.image.source="https://github.com/${BUILD_REPOSITORY}" \
