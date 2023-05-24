@@ -10,12 +10,12 @@ ARG BUILD_ARCH=amd64
 RUN \
     apt-get update \
     && apt-get install -y --no-install-recommends \
-        binutils=2.34-6ubuntu1.3 \
+        binutils=2.34-6ubuntu1.4 \
         jsvc=1.0.15-8 \
         libcap2=1:2.32-1 \
         logrotate=3.14.0-4ubuntu3 \
         mongodb-server=1:3.6.9+really3.6.8+90~g8e540c0b6d-0ubuntu5.3 \
-        openjdk-8-jdk-headless=8u312-b07-0ubuntu1~20.04 \
+        openjdk-11-jdk-headless=11.0.18+10-0ubuntu1~20.04.1 \
     \
     && curl -J -L -o /tmp/unifi.deb \
         "https://dl.ui.com/unifi/7.4.156-6ee9e412d1/unifi_sysvinit_all.deb" \
