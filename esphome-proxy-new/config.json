@@ -10,6 +10,7 @@
   "boot": "auto",
   "ingress": true,
   "ingress_port": 6052,
+  "init": "false",
   "panel_admin": false,
   "options": {
     "server": "esphome.local:6052"
