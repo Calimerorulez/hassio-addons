@@ -1,6 +1,6 @@
 {
   "name": "ESPHome Proxy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "url": "https://github.com/Calimerorulez/hassio-addons/esphome-proxy-new",
   "panel_icon": "mdi:chip",
   "slug": "esphome-proxy",
@@ -10,7 +10,6 @@
   "boot": "auto",
   "ingress": true,
   "ingress_port": 6052,
-  "init": "false",
   "panel_admin": false,
   "options": {
     "server": "esphome.local:6052"
