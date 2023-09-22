@@ -1,6 +1,6 @@
 {
   "name": "ESPHome Proxy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "url": "https://github.com/Calimerorulez/hassio-addons/esphome-proxy-new",
   "panel_icon": "mdi:chip",
   "slug": "esphome-proxy",
