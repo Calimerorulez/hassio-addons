@@ -1,13 +1,13 @@
 ![amd64][amd64-shield] ![armv7][armv7-shield] ![aarch64][aarch64-shield] ![armhf][armhf-shield] ![i386][i386-shield]
 
-# ESPHome proxy
+# Double-Take proxy
 
 
 ---
 
-This add-on creates a proxy to a ESPHome instance running separately from Home Assistant.
+This add-on creates a proxy to a Double-Take instance running separately from Home Assistant.
 
-_Note: this add-on does not run ESPHome itself._
+_Note: this add-on does not run Double-Take itself._
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
