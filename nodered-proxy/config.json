@@ -1,6 +1,6 @@
 {
   "name": "Node-Red Proxy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "url": "https://github.com/Calimerorulez/hassio-addons/nodered-proxy",
   "panel_icon": "mdi:transit-connection-variant",
   "slug": "nodered-proxy",
