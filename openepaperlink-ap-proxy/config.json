@@ -1,6 +1,6 @@
 {
   "name": "OpenEpaperLink AccessPoint",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "url": "https://github.com/Calimerorulez/hassio-addons/openepaperlink-ap-proxy",
   "panel_icon": "mdi:access-point-network",
   "slug": "openepaperlink-ap-proxy",
