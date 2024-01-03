@@ -1,6 +1,6 @@
 {
   "name": "Z-Wave2MQTT Proxy",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "url": "https://github.com/Calimerorulez/hassio-addons/zwave2mqtt-proxy",
   "panel_icon": "mdi:z-wave",
   "slug": "zwave2mqtt-proxy",
