@@ -1,0 +1,21 @@
+{
+  "name": "go2rtc Proxy",
+  "version": "1.0.0",
+  "url": "https://github.com/Calimerorulez/hassio-addons/go2rtc-proxy",
+  "panel_icon": "mdi:video-switch",
+  "slug": "go2rtc-proxy",
+  "description": "Proxy for externally hosted go2rtc",
+  "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "ingress": true,
+  "init": false,
+  "ingress_port": 1984,
+  "panel_admin": false,
+  "options": {
+    "server": "go2rtc:1984"
+  },
+  "schema": {
+    "server": "match(^.+:\\d+$)"
+  }
+}
