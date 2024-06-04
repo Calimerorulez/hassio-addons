@@ -1,6 +1,6 @@
 {
   "name": "go2rtc Proxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "url": "https://github.com/Calimerorulez/hassio-addons/go2rtc-proxy",
   "panel_icon": "mdi:video-switch",
   "slug": "go2rtc-proxy",
