@@ -1,6 +1,6 @@
 {
   "name": "Double-Take Proxy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "url": "https://github.com/Calimerorulez/hassio-addons/double-take-proxy",
   "panel_icon": "mdi:face-recognition",
   "slug": "double-take-proxy",
