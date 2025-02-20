@@ -1,3 +1,7 @@
+# 1.0.8
+
+- Updated base image to Debian 7.7.1.
+
 # 1.0.7
 
 - Updated base image to Debian 7.3.3.
