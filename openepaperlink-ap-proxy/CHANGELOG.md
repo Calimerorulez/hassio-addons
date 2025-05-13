@@ -1,4 +1,4 @@
-# 1.0.5
+# 1.0.7
 
 - Updated base image to Debian base 7.8.3
 
