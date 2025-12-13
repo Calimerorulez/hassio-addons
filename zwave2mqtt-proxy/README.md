@@ -1,13 +1,13 @@
 ![amd64][amd64-shield] ![armv7][armv7-shield] ![aarch64][aarch64-shield] ![armhf][armhf-shield] ![i386][i386-shield]
 
-# Z-Wave2MQTT proxy
+# Z-Wave JS UI proxy
 
 
 ---
 
-This add-on creates a proxy to a Z-Wave2MQTT instance running separately from Home Assistant.
+This add-on creates a proxy to a Z-Wave2 JS UI instance running separately from Home Assistant.
 
-_Note: this add-on does not run Z-Wave2MQTT itself._
+_Note: this add-on does not run Z-Wave JS UI itself._
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
