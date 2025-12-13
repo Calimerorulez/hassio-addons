@@ -51,7 +51,6 @@ http {
 
             set     $target "{{ .server }}";
 
-            set $args                   $args&token=$token;
             proxy_pass                  $target;
             proxy_http_version          1.1;
             proxy_ignore_client_abort   off;
