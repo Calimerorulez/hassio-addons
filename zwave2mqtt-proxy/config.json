@@ -1,10 +1,10 @@
 {
-  "name": "Z-Wave2MQTT Proxy",
-  "version": "1.0.9",
+  "name": "Z-Wave JS UI Proxy",
+  "version": "1.0.10",
   "url": "https://github.com/Calimerorulez/hassio-addons/zwave2mqtt-proxy",
   "panel_icon": "mdi:z-wave",
   "slug": "zwave2mqtt-proxy",
-  "description": "Proxy for externally hosted Z-Wave2MQTT",
+  "description": "Proxy for externally hosted Z-Wave JS UI",
   "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
   "startup": "application",
   "boot": "auto",
