@@ -18,16 +18,15 @@
       "config:ro"
     ],
     "ports": {
-      "8099/tcp": null
+      "8091/tcp": null
     },
     "ports_description": {
-      "8099/tcp": "Frontend tcp-listen port"
+      "8091/tcp": "Frontend tcp-listen port"
     },
     "options": {
       "server": null
     },
     "schema": {
-      "server": "url",
-      "auth_token": "str?"
+      "server": "url"
     }
 }
