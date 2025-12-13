@@ -1,7 +1,7 @@
 {
   "name": "Z-Wave JS UI Proxy",
   "version": "1.0.10",
-  "url": "https://github.com/Calimerorulez/hassio-addons/zwave2mqtt-proxy",
+  "url": "https://github.com/Calimerorulez/hassio-addons/zwave-js-ui-proxy",
   "panel_icon": "mdi:z-wave",
   "slug": "zwave2mqtt-proxy",
   "description": "Proxy for externally hosted Z-Wave JS UI",
