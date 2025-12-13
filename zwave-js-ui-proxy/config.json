@@ -1,6 +1,6 @@
 {
     "name": "Z-Wave JS UI Proxy",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "slug": "zwave_js_ui_proxy",
     "description": "Proxy for externally running Z-wave JS UI",
     "url": "https://github.com/Calimerorulez/hassio-addons/tree/master/zwave-js-ui-proxy",
