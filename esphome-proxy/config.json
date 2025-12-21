@@ -1,5 +1,5 @@
 {
-    "name": "Z-Wave JS UI Proxy",
+    "name": "ESPHome Proxy",
     "version": "0.1.0",
     "slug": "esphome_proxy",
     "description": "Proxy for externally running ESPHome",
