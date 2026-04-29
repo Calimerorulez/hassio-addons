@@ -1,6 +1,5 @@
 daemon off;
 
-# user www-data;  <-- remove this
 
 pid /tmp/nginx.pid;
 
