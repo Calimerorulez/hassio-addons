@@ -4,7 +4,7 @@
 daemon off;
 
 # This is run inside Docker.
-user nginx;
+# user nginx;
 
 # Pid storage location.
 pid /var/run/nginx.pid;
