@@ -15,7 +15,7 @@ ADD entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/bin/sh", "-c", "/entrypoint.sh"]
+
 # Build arguments
 ARG BUILD_ARCH
 ARG BUILD_DESCRIPTION
