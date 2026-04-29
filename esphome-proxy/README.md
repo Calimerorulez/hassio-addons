@@ -1,10 +1,16 @@
-# Home Assistant Add-on: ESPHome Proxy
+![amd64][amd64-shield] ![armv7][armv7-shield] ![aarch64][aarch64-shield] ![armhf][armhf-shield] ![i386][i386-shield]
 
-⚠️ This add-on does not contain ESPHome ⚠️
+# Node-Red proxy
 
-This add-on acts as a proxy to an external running ESPHome instance. 
-The sole purpose of this add-on is to add a ESPHome icon to the sidebar of Home Assistant which will open the frontend of an external running ESPHome instance.
 
-## Options
+---
 
-- `server` (required): this should be the local URL on which the ESPHome frontend is running, e.g. `http://192.168.2.43:8091`. Make sure there is no trailing slash!
+This add-on creates a proxy to a Node-Red instance running separately from Home Assistant.
+
+_Note: this add-on does not run Node-Red itself._
+
+[aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+[armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
+[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
