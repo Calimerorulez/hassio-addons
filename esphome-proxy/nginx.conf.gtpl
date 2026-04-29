@@ -40,7 +40,7 @@ http {
             allow 172.30.0.0/16;
             deny all;
 
-            set $target http://10.0.5.104:6052;
+            set $target "{{ .server }}";
 
             proxy_pass $target;
             proxy_http_version 1.1;
