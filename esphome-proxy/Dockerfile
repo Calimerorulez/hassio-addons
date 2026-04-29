@@ -4,7 +4,11 @@ FROM ghcr.io/hassio-addons/debian-base/${BUILD_ARCH}:9.3.0
 
 RUN apt-get -qq update \
   && apt-get -qq install --no-install-recommends -y nginx \
-  && (apt-get autoremove -y; apt-get autoclean -y)
+  && (apt-get autoremove -y; apt-get autoclean -y) \
+
+  && curl -L -s -o /usr/bin/tempio \
+        "https://github.com/home-assistant/tempio/releases/download/${TEMPIO_VERSION}/tempio_${BUILD_ARCH}" \
+    && chmod a+x /usr/bin/tempio 
 
 # Copy root filesystem
 ADD nginx.conf.gtpl /
