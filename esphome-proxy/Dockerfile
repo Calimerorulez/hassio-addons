@@ -1,5 +1,4 @@
 ARG BUILD_ARCH
-# hadolint ignore=DL3006
 FROM ghcr.io/hassio-addons/debian-base/${BUILD_ARCH}:9.3.0
 
 RUN apt-get -qq update \
