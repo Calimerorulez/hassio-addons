@@ -2,7 +2,9 @@ ARG BUILD_ARCH
 # hadolint ignore=DL3006
 FROM ghcr.io/hassio-addons/debian-base/${BUILD_ARCH}:9.3.0
 
-RUN apk add --no-cache --update nginx
+RUN apt-get -qq update \
+  && apt-get -qq install --no-install-recommends -y nginx \
+  && (apt-get autoremove -y; apt-get autoclean -y)
 
 # Copy root filesystem
 ADD nginx.conf.gtpl /
