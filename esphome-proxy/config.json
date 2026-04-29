@@ -1,13 +1,10 @@
 {
     "name": "ESPHome Proxy",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "slug": "esphome_proxy",
     "description": "Proxy for externally running ESPHome",
     "url": "https://github.com/Calimerorulez/hassio-addons/tree/master/esphome-proxy",
-    "arch": [
-      "aarch64",
-      "amd64"
-    ],
+    "arch": ["aarch64", "amd64", "armhf", "armv7", "i386"],
     "boot": "auto",
     "init": true,
     "true": true,
