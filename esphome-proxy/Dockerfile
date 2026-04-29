@@ -1,5 +1,7 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG BUILD_ARCH
+# hadolint ignore=DL3006
+FROM ghcr.io/hassio-addons/debian-base/${BUILD_ARCH}:9.3.0
+
 RUN apk add --no-cache --update nginx
 
 # Copy root filesystem
