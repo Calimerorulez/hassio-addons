@@ -51,11 +51,17 @@ jobs:
           description=${{ steps.info.outputs.description }}
           url=${{ steps.info.outputs.url }}
 
-          echo "image_name=${image##*/}" >> "$GITHUB_OUTPUT"
-          echo "registry_prefix=${image%/*}" >> "$GITHUB_OUTPUT"
-          echo "version=${version}" >> "$GITHUB_OUTPUT"
-          echo "name=${name}" >> "$GITHUB_OUTPUT"
-          echo "description=${description}" >> "$GITHUB_OUTPUT"
+          {
+            echo "image_name=${image##*/}"
+            echo "registry_prefix=${image%/*}"
+            echo "version=${version}"
+            echo "name=${name}"
+            echo "description=${description}"
+
+            if [[ -n "${url}" && "${url}" != "null" ]]; then
+              echo "url=${url}"
+            fi
+          } >> "$GITHUB_OUTPUT"
 
           if [[ -n "${url}" && "${url}" != "null" ]]; then
             echo "url=${url}" >> "$GITHUB_OUTPUT"
