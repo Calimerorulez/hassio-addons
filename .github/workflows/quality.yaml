@@ -1,0 +1,81 @@
+name: Quality
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/**"
+      - "esphome-proxy/**"
+      - ".hadolint.yaml"
+      - ".yamllint"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/**"
+      - "esphome-proxy/**"
+      - ".hadolint.yaml"
+      - ".yamllint"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6.0.2
+
+      - name: Install ShellCheck and yamllint
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes shellcheck yamllint
+
+      - name: Check shell scripts
+        shell: bash
+        run: |
+          find esphome-proxy \
+            -type f \
+            \( -name "*.sh" -o -name "run.sh" \) \
+            -print0 |
+            xargs -0 --no-run-if-empty shellcheck --shell=bash
+
+      - name: Check YAML
+        shell: bash
+        run: |
+          yamllint \
+            .github \
+            .hadolint.yaml \
+            esphome-proxy/config.yaml \
+            esphome-proxy/translations
+
+      - name: Check GitHub Actions workflows
+        shell: bash
+        run: |
+          docker run --rm \
+            -v "${PWD}:/repo" \
+            -w /repo \
+            rhysd/actionlint:1.7.7
+
+      - name: Check Dockerfile
+        shell: bash
+        run: |
+          docker run --rm \
+            -i \
+            -v "${PWD}:/repo" \
+            -w /repo \
+            ghcr.io/hadolint/hadolint:v2.13.1-debian \
+            hadolint \
+            --config /repo/.hadolint.yaml \
+            /repo/esphome-proxy/Dockerfile

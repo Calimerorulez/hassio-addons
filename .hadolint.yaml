@@ -1,0 +1,14 @@
+---
+failure-threshold: warning
+
+ignored:
+  # Home Assistant currently documents this rolling base-image tag.
+  # Remove this exception when the Dockerfile is pinned to a release tag.
+  - DL3007
+
+  # Alpine package versions are intentionally managed by the selected
+  # Home Assistant base image rather than pinned individually here.
+  - DL3018
+
+trusted-registries:
+  - ghcr.io
