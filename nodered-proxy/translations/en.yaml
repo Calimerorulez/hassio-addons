@@ -1,0 +1,6 @@
+configuration:
+  server:
+    name: Node-RED server
+    description: >-
+      Hostname or IPv4 address and port of the external Node-RED instance,
+      for example node-red.local:1880. Do not include http:// or a path.
