@@ -1,0 +1,35 @@
+name: "Zigbee2MQTT Proxy"
+version: "1.0.0"
+slug: "zigbee2mqtt_proxy"
+description: "Expose an externally running Zigbee2MQTT frontend through Home Assistant Ingress"
+url: "https://github.com/Calimerorulez/hassio-addons/tree/main/zigbee2mqtt-proxy"
+
+image: ghcr.io/calimerorulez/zigbee2mqtt-proxy
+
+arch:
+  - aarch64
+  - amd64
+
+startup: application
+boot: auto
+init: false
+stage: stable
+timeout: 30
+
+ingress: true
+ingress_port: 8099
+ingress_stream: true
+
+panel_icon: "mdi:zigbee"
+panel_title: "Zigbee2MQTT"
+panel_admin: false
+
+watchdog: "tcp://[HOST]:[PORT:8099]"
+
+options:
+  server: "http://zigbee2mqtt.local:8080"
+  auth_token: ""
+
+schema:
+  server: "url"
+  auth_token: "password?"
