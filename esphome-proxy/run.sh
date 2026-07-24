@@ -3,7 +3,9 @@
 
 set -euo pipefail
 
-readonly SERVER="$(bashio::config 'server')"
+SERVER="$(bashio::config 'server')"
+readonly SERVER
+
 readonly TEMPLATE="/etc/nginx/nginx.conf.template"
 readonly CONFIG="/etc/nginx/nginx.conf"
 
