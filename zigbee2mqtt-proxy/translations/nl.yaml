@@ -1,0 +1,11 @@
+configuration:
+  server:
+    name: Zigbee2MQTT-server
+    description: >-
+      Volledige URL van de externe Zigbee2MQTT-frontend, inclusief poort,
+      bijvoorbeeld http://192.168.2.43:8080. Gebruik geen afsluitende slash.
+  auth_token:
+    name: Authenticatietoken van de frontend
+    description: >-
+      Optioneel token dat in Zigbee2MQTT als frontend.auth_token is ingesteld.
+      Laat leeg wanneer authenticatie van de frontend uitstaat.
