@@ -1,7 +1,4 @@
 configuration:
   server:
     name: Z-Wave JS UI server
-    description: >-
-      Full HTTP or HTTPS URL of the external Z-Wave JS UI instance, including
-      its port, for example http://zwave-js-ui.local:8091. Do not add a path
-      or trailing slash.
+    description: Full HTTP(S) URL including port, for example http://zwave-js-ui.local:8091.

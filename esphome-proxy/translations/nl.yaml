@@ -1,4 +1,4 @@
 configuration:
   server:
-    name: "Adres van ESPHome Device Builder"
-    description: "Hostnaam of IPv4-adres en poort van de externe Device Builder, bijvoorbeeld esphome.local:6052. Gebruik geen http://, pad of afsluitende slash."
+    name: ESPHome-server
+    description: Hostnaam of IPv4-adres en poort, bijvoorbeeld esphome.local:6052.

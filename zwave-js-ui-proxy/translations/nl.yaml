@@ -1,7 +1,4 @@
 configuration:
   server:
     name: Z-Wave JS UI-server
-    description: >-
-      Volledige HTTP- of HTTPS-URL van de externe Z-Wave JS UI-installatie,
-      inclusief poort, bijvoorbeeld http://zwave-js-ui.local:8091. Gebruik
-      geen pad of afsluitende slash.
+    description: Volledige HTTP(S)-URL inclusief poort, bijvoorbeeld http://zwave-js-ui.local:8091.
