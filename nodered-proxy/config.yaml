@@ -1,5 +1,5 @@
 name: "Node-RED Proxy"
-version: "2.0.0"
+version: "2.0.1"
 slug: "nodered-proxy"
 description: "Expose an externally hosted Node-RED instance through Home Assistant Ingress"
 url: "https://github.com/Calimerorulez/hassio-addons/tree/main/nodered-proxy"
