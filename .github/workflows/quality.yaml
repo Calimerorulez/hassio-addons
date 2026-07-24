@@ -49,7 +49,7 @@ jobs:
             -type f \
             \( -name "*.sh" -o -name "run.sh" \) \
             -print0 |
-            xargs -0 --no-run-if-empty shellcheck
+            xargs -0 --no-run-if-empty shellcheck --shell=bash
 
       - name: Check YAML
         shell: bash
