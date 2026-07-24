@@ -1,26 +1,22 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
-RUN apk add --no-cache --update nginx
+FROM ghcr.io/home-assistant/base:latest
 
-# Copy root filesystem
-ADD nginx.conf.gtpl /
-ADD entrypoint.sh /
-
-RUN chmod +x /entrypoint.sh
-
-ENTRYPOINT ["/bin/sh", "-c", "/entrypoint.sh"]
-# Build arguments
-ARG BUILD_ARCH
-ARG BUILD_DESCRIPTION
-ARG BUILD_NAME
 ARG BUILD_VERSION
+ARG BUILD_ARCH
 
-# Labels
+RUN apk add --no-cache nginx
+
+COPY rootfs /
+COPY run.sh /run.sh
+
+RUN chmod 0755 /run.sh && mkdir -p /run/nginx
+
 LABEL \
-    io.hass.name="${BUILD_NAME}" \
-    io.hass.description="${BUILD_DESCRIPTION}" \
+    io.hass.version="${BUILD_VERSION}" \
+    io.hass.type="app" \
     io.hass.arch="${BUILD_ARCH}" \
-    io.hass.type="addon" \
-    io.hass.version=${BUILD_VERSION}
+    org.opencontainers.image.title="Z-Wave JS UI Proxy" \
+    org.opencontainers.image.description="Home Assistant Ingress proxy for an external Z-Wave JS UI instance" \
+    org.opencontainers.image.source="https://github.com/Calimerorulez/hassio-addons" \
+    org.opencontainers.image.licenses="MIT"
 
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/run.sh"]
