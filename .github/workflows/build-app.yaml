@@ -37,19 +37,26 @@ jobs:
         id: normalize
         shell: bash
         run: |
-          image='${{ steps.info.outputs.image }}'
+          # De info-helper geeft YAML-scalars met hun quotes terug.
+          # Een on-gequote shell assignment verwijdert die quotes.
+          image=${{ steps.info.outputs.image }}
+
           if [[ -z "${image}" || "${image}" == "null" ]]; then
             echo "::error::The image field is missing from ${{ inputs.app }}/config.yaml"
             exit 1
           fi
 
+          version=${{ steps.info.outputs.version }}
+          name=${{ steps.info.outputs.name }}
+          description=${{ steps.info.outputs.description }}
+          url=${{ steps.info.outputs.url }}
+
           echo "image_name=${image##*/}" >> "$GITHUB_OUTPUT"
           echo "registry_prefix=${image%/*}" >> "$GITHUB_OUTPUT"
-          echo "version=${{ steps.info.outputs.version }}" >> "$GITHUB_OUTPUT"
-          echo "name=${{ steps.info.outputs.name }}" >> "$GITHUB_OUTPUT"
-          echo "description=${{ steps.info.outputs.description }}" >> "$GITHUB_OUTPUT"
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "name=${name}" >> "$GITHUB_OUTPUT"
+          echo "description=${description}" >> "$GITHUB_OUTPUT"
 
-          url='${{ steps.info.outputs.url }}'
           if [[ -n "${url}" && "${url}" != "null" ]]; then
             echo "url=${url}" >> "$GITHUB_OUTPUT"
           fi
