@@ -1,0 +1,6 @@
+configuration:
+  server:
+    name: Node-RED-server
+    description: >-
+      Hostnaam of IPv4-adres en poort van de externe Node-RED-installatie,
+      bijvoorbeeld node-red.local:1880. Gebruik geen http:// of pad.

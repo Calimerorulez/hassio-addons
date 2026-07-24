@@ -23,7 +23,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build-esphome-proxy:
     name: Build ESPHome Proxy
     permissions:
       contents: read
@@ -34,6 +34,21 @@ jobs:
 
     with:
       app: esphome-proxy
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+    secrets: inherit
+
+  build-nodered-proxy:
+    name: Build Node-RED Proxy
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
+    uses: ./.github/workflows/build-app.yaml
+
+    with:
+      app: nodered-proxy
       publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
     secrets: inherit

@@ -1,23 +1,19 @@
-# 1.0.8
+# Changelog
 
-- Updated Debian base image to 9.3.0.
+## 2.0.0
 
-# 1.0.6
+- Migrated from `config.json` to `config.yaml`.
+- Migrated to the official Home Assistant base image.
+- Replaced the legacy init and service layout with a single Bashio startup script.
+- Added strict backend address validation.
+- Added explicit Nginx configuration validation before startup.
+- Added WebSocket support for the Node-RED editor and runtime.
+- Added a Supervisor TCP watchdog.
+- Added Dutch and English configuration translations.
+- Added current app metadata and OCI labels.
+- Restricted supported architectures to `amd64` and `aarch64`.
+- Preserved the existing `server: host:port` configuration format.
 
-- Updated Debian base image to 7.7.1.
+## 1.0.8
 
-# 1.0.5
-
-- Updated base image to Debian base 7.3.3.
-
-# 1.0.4
-
-- Updated base image to Debian base 7.3.1.
-
-# 1.0.3
-
-- Updated base image to Debian base 7.2.0.
-
-# 1.0.0
-
-- initial release
+- Legacy release.
