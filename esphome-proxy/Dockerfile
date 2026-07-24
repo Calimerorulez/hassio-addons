@@ -1,23 +1,25 @@
-ARG BUILD_ARCH
-# hadolint ignore=DL3006
-FROM ghcr.io/hassio-addons/debian-base/${BUILD_ARCH}:9.3.0
+FROM ghcr.io/home-assistant/base:latest
 
-# Set shell
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-# Setup base
-# hadolint ignore=DL3003
-RUN apt-get -qq update \
-  && apt-get -qq install --no-install-recommends -y nginx \
-  && (apt-get autoremove -y; apt-get autoclean -y)
-
-# Copy root filesystem
-COPY rootfs /
-
-ARG BUILD_ARCH
-ARG BUILD_DATE
-ARG BUILD_DESCRIPTION
-ARG BUILD_NAME
-ARG BUILD_REF
-ARG BUILD_REPOSITORY
 ARG BUILD_VERSION
+ARG BUILD_ARCH
+
+RUN apk add --no-cache nginx
+
+COPY rootfs /
+COPY run.sh /run.sh
+
+RUN \
+    chmod 0755 /run.sh \
+    && mkdir -p /run/nginx \
+    && chown nginx:nginx /run/nginx
+
+LABEL \
+    io.hass.version="${BUILD_VERSION}" \
+    io.hass.type="app" \
+    io.hass.arch="${BUILD_ARCH}" \
+    org.opencontainers.image.title="ESPHome Proxy" \
+    org.opencontainers.image.description="Home Assistant Ingress proxy for an external ESPHome Device Builder" \
+    org.opencontainers.image.source="https://github.com/Calimerorulez/hassio-addons" \
+    org.opencontainers.image.licenses="MIT"
+
+CMD ["/run.sh"]

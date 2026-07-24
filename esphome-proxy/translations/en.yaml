@@ -1,0 +1,4 @@
+configuration:
+  server:
+    name: "ESPHome Device Builder address"
+    description: "Hostname or IPv4 address and port of the external Device Builder, for example esphome.local:6052. Do not include http://, a path or a trailing slash."
