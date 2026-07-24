@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - "esphome-proxy/**"
+      - "nodered-proxy/**"
+      - "zwave-js-ui-proxy/**"
       - ".github/workflows/builder.yaml"
       - ".github/workflows/build-app.yaml"
 
@@ -14,6 +16,8 @@ on:
       - main
     paths:
       - "esphome-proxy/**"
+      - "nodered-proxy/**"
+      - "zwave-js-ui-proxy/**"
       - ".github/workflows/builder.yaml"
       - ".github/workflows/build-app.yaml"
 
