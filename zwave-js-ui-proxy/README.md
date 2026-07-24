@@ -1,10 +1,19 @@
-# Home Assistant Add-on: Z-Wave JS UI Proxy
+# Z-Wave JS UI Proxy
 
-⚠️ This add-on does not contain Z-Wave JS UI ⚠️
+Deze Home Assistant-app toont een extern draaiende Z-Wave JS UI-installatie via Home Assistant Ingress.
 
-This add-on acts as a proxy to an external running Z-Wave JS UI instance. 
-The sole purpose of this add-on is to add a Z-Wave JS UI icon to the sidebar of Home Assistant which will open the frontend of an external running Z-Wave JS UI instance.
+> Deze app bevat Z-Wave JS UI zelf niet.
 
-## Options
+## Configuratie
 
-- `server` (required): this should be the local URL on which the Z-Wave JS UI frontend is running, e.g. `http://192.168.2.43:8091`. Make sure there is no trailing slash!
+```yaml
+server: http://zwave-js-ui.local:8091
+```
+
+Een IP-adres kan ook:
+
+```yaml
+server: http://192.168.2.43:8091
+```
+
+Gebruik geen pad of afsluitende slash.
