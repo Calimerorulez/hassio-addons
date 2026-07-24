@@ -1,49 +1,54 @@
-# ESPHome Proxy configuration
+# ESPHome Proxy configuratie
 
-## `server`
+## Optie `server`
 
-Address of the external ESPHome Device Builder in `host:port` format.
-
-Examples:
+Het adres van de externe ESPHome Device Builder in `host:poort`-formaat.
 
 ```yaml
 server: esphome.local:6052
 ```
 
+Een IPv4-adres is ook toegestaan:
+
 ```yaml
 server: 192.168.1.50:6052
 ```
 
-The current release supports hostnames and IPv4 addresses over HTTP.
+Gebruik geen `http://`, pad of afsluitende slash. Deze versie ondersteunt een
+HTTP-backend met een hostnaam of IPv4-adres.
 
-## Troubleshooting
+## Werking en beveiliging
+
+De app publiceert geen netwerkpoort op de Home Assistant-host. De proxy luistert
+alleen op de interne Ingress-poort en accepteert HTTP-verkeer van de Supervisor
+Ingress-gateway. Home Assistant verzorgt daardoor de gebruikersauthenticatie.
+
+De Supervisor bewaakt de interne TCP-poort met de ingebouwde watchdog.
+
+## Problemen oplossen
 
 ### `502 Bad Gateway`
 
-The Home Assistant app container cannot connect to the configured backend.
+De app kan de geconfigureerde ESPHome-backend niet bereiken. Controleer:
 
-Check:
+1. of ESPHome Device Builder draait;
+2. of de poort klopt;
+3. of de hostnaam binnen Home Assistant kan worden opgelost;
+4. of een firewall verbindingen vanaf Home Assistant blokkeert;
+5. of Device Builder op een LAN-bereikbaar adres luistert.
 
-1. The ESPHome Device Builder is running.
-2. The port is correct.
-3. DNS inside Home Assistant can resolve the hostname.
-4. A firewall is not blocking traffic from Home Assistant.
-5. The Device Builder listens on an address reachable over the LAN.
+Test tijdelijk met het IP-adres van de backend om een DNS-probleem uit te sluiten.
 
-Using the backend IP address temporarily is a useful DNS test.
+### De pagina opent, maar live logs werken niet
 
-### Page opens but live logs fail
+Controleer of een eventuele extra reverse proxy tussen deze app en ESPHome
+WebSocket-verkeer ondersteunt. ESPHome Proxy stuurt WebSocket-upgrades door en
+schakelt buffering uit.
 
-Confirm that no reverse proxy between this app and the Device Builder removes
-WebSocket headers. ESPHome Proxy forwards WebSocket upgrade headers and disables
-proxy buffering.
+### De configuratie wordt afgekeurd
 
-### Configuration is rejected
-
-Use only:
+Gebruik uitsluitend:
 
 ```text
-hostname-or-ip:port
+hostnaam-of-ip:poort
 ```
-
-Do not include `http://`, a path or a trailing slash.

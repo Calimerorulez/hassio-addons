@@ -1,5 +1,5 @@
 name: "ESPHome Proxy"
-version: "2.0.0"
+version: "2.0.1"
 slug: "esphome-proxy"
 description: "Expose an externally hosted ESPHome Device Builder through Home Assistant Ingress"
 url: "https://github.com/Calimerorulez/hassio-addons/tree/main/esphome-proxy"
@@ -12,13 +12,18 @@ arch:
 startup: application
 boot: auto
 init: false
+stage: stable
+timeout: 30
 
 ingress: true
 ingress_port: 8099
 ingress_stream: true
+
 panel_icon: "mdi:esphome"
 panel_title: "ESPHome"
 panel_admin: false
+
+watchdog: "tcp://[HOST]:[PORT:8099]"
 
 options:
   server: "esphome.local:6052"
