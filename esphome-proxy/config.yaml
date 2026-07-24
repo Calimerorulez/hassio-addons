@@ -3,7 +3,7 @@ version: "2.0.0"
 slug: "esphome-proxy"
 description: "Expose an externally hosted ESPHome Device Builder through Home Assistant Ingress"
 url: "https://github.com/Calimerorulez/hassio-addons/tree/main/esphome-proxy"
-image: "ghcr.io/calimerorulez/esphome-proxy"
+image: ghcr.io/calimerorulez/esphome-proxy
 
 arch:
   - aarch64
