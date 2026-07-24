@@ -8,10 +8,7 @@ RUN apk add --no-cache nginx
 COPY rootfs /
 COPY run.sh /run.sh
 
-RUN \
-    chmod 0755 /run.sh \
-    && mkdir -p /run/nginx \
-    && chown nginx:nginx /run/nginx
+RUN chmod 0755 /run.sh
 
 LABEL \
     io.hass.version="${BUILD_VERSION}" \
