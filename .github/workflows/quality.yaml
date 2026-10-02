@@ -7,6 +7,10 @@ on:
     paths:
       - ".github/**"
       - "esphome-proxy/**"
+      - "nodered-proxy/**"
+      - "openepaperlink-ap-proxy/**"
+      - "zwave-js-ui-proxy/**"
+      - "zigbee2mqtt-proxy/**"
       - ".hadolint.yaml"
       - ".yamllint"
   push:
@@ -15,6 +19,10 @@ on:
     paths:
       - ".github/**"
       - "esphome-proxy/**"
+      - "nodered-proxy/**"
+      - "openepaperlink-ap-proxy/**"
+      - "zwave-js-ui-proxy/**"
+      - "zigbee2mqtt-proxy/**"
       - ".hadolint.yaml"
       - ".yamllint"
   workflow_dispatch:
@@ -28,7 +36,7 @@ concurrency:
 
 jobs:
   lint:
-    name: Lint repository
+    name: Lint active proxy add-ons
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -45,37 +53,23 @@ jobs:
       - name: Check shell scripts
         shell: bash
         run: |
-          find esphome-proxy \
-            -type f \
-            \( -name "*.sh" -o -name "run.sh" \) \
-            -print0 |
+          find             esphome-proxy             nodered-proxy             openepaperlink-ap-proxy             zwave-js-ui-proxy             zigbee2mqtt-proxy             -type f             \( -name "*.sh" -o -name "run.sh" \)             -print0 |
             xargs -0 --no-run-if-empty shellcheck --shell=bash
 
       - name: Check YAML
         shell: bash
         run: |
-          yamllint \
-            .github \
-            .hadolint.yaml \
-            esphome-proxy/config.yaml \
-            esphome-proxy/translations
+          yamllint             .github             .hadolint.yaml             esphome-proxy/config.yaml             esphome-proxy/translations             nodered-proxy/config.yaml             nodered-proxy/translations             openepaperlink-ap-proxy/config.yaml             zwave-js-ui-proxy/config.yaml             zwave-js-ui-proxy/translations             zigbee2mqtt-proxy/config.yaml             zigbee2mqtt-proxy/translations
 
       - name: Check GitHub Actions workflows
         shell: bash
         run: |
-          docker run --rm \
-            -v "${PWD}:/repo" \
-            -w /repo \
-            rhysd/actionlint:1.7.7
+          docker run --rm             -v "${PWD}:/repo"             -w /repo             rhysd/actionlint:1.7.7
 
-      - name: Check Dockerfile
+      - name: Check Dockerfiles
         shell: bash
         run: |
-          docker run --rm \
-            -i \
-            -v "${PWD}:/repo" \
-            -w /repo \
-            ghcr.io/hadolint/hadolint:v2.13.1-debian \
-            hadolint \
-            --config /repo/.hadolint.yaml \
-            /repo/esphome-proxy/Dockerfile
+          for dockerfile in             esphome-proxy/Dockerfile             nodered-proxy/Dockerfile             openepaperlink-ap-proxy/Dockerfile             zwave-js-ui-proxy/Dockerfile             zigbee2mqtt-proxy/Dockerfile
+          do
+            docker run --rm               -i               -v "${PWD}:/repo"               -w /repo               ghcr.io/hadolint/hadolint:v2.13.1-debian               hadolint               --config /repo/.hadolint.yaml               "/repo/${dockerfile}"
+          done

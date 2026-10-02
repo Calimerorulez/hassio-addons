@@ -28,3 +28,59 @@ updates:
       - docker
     commit-message:
       prefix: "build"
+
+  - package-ecosystem: docker
+    directory: /nodered-proxy
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:20"
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: "build"
+
+  - package-ecosystem: docker
+    directory: /openepaperlink-ap-proxy
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:25"
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: "build"
+
+  - package-ecosystem: docker
+    directory: /zwave-js-ui-proxy
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:30"
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: "build"
+
+  - package-ecosystem: docker
+    directory: /zigbee2mqtt-proxy
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:35"
+      timezone: Europe/Amsterdam
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: "build"

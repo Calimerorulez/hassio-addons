@@ -1,4 +1,4 @@
-name: ESPHome Proxy Builder
+name: Proxy Add-ons Builder
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
     paths:
       - "esphome-proxy/**"
       - "nodered-proxy/**"
+      - "openepaperlink-ap-proxy/**"
       - "zwave-js-ui-proxy/**"
       - "zigbee2mqtt-proxy/**"
       - ".github/workflows/builder.yaml"
@@ -18,6 +19,7 @@ on:
     paths:
       - "esphome-proxy/**"
       - "nodered-proxy/**"
+      - "openepaperlink-ap-proxy/**"
       - "zwave-js-ui-proxy/**"
       - "zigbee2mqtt-proxy/**"
       - ".github/workflows/builder.yaml"
@@ -35,13 +37,10 @@ jobs:
       contents: read
       id-token: write
       packages: write
-
     uses: ./.github/workflows/build-app.yaml
-
     with:
       app: esphome-proxy
       publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-
     secrets: inherit
 
   build-nodered-proxy:
@@ -50,13 +49,22 @@ jobs:
       contents: read
       id-token: write
       packages: write
-
     uses: ./.github/workflows/build-app.yaml
-
     with:
       app: nodered-proxy
       publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    secrets: inherit
 
+  build-openepaperlink-ap-proxy:
+    name: Build OpenEpaperLink AP Proxy
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    uses: ./.github/workflows/build-app.yaml
+    with:
+      app: openepaperlink-ap-proxy
+      publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     secrets: inherit
 
   build-zwave-js-ui-proxy:
@@ -65,13 +73,10 @@ jobs:
       contents: read
       id-token: write
       packages: write
-
     uses: ./.github/workflows/build-app.yaml
-
     with:
       app: zwave-js-ui-proxy
       publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-
     secrets: inherit
 
   build-zigbee2mqtt-proxy:
@@ -80,11 +85,8 @@ jobs:
       contents: read
       id-token: write
       packages: write
-
     uses: ./.github/workflows/build-app.yaml
-
     with:
       app: zigbee2mqtt-proxy
       publish: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-
     secrets: inherit

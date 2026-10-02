@@ -1,0 +1,25 @@
+name: "OpenEpaperLink AccessPoint"
+version: "2.0.0"
+slug: "openepaperlink-ap-proxy"
+description: "Expose an externally hosted OpenEpaperLink AccessPoint through Home Assistant Ingress"
+url: "https://github.com/Calimerorulez/hassio-addons/tree/main/openepaperlink-ap-proxy"
+image: ghcr.io/calimerorulez/openepaperlink-ap-proxy
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+stage: stable
+timeout: 30
+ingress: true
+ingress_port: 8099
+ingress_stream: true
+panel_icon: "mdi:access-point-network"
+panel_title: "OpenEpaperLink"
+panel_admin: false
+watchdog: "tcp://[HOST]:[PORT:8099]"
+options:
+  server: "openepaperlink-ap.local:80"
+schema:
+  server: "match(^([A-Za-z0-9](?:[A-Za-z0-9.-]{0,251}[A-Za-z0-9])?|(?:[0-9]{1,3}\\.){3}[0-9]{1,3}):([1-9][0-9]{0,4})$)"

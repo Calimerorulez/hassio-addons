@@ -1,3 +1,10 @@
+# 2.0.0
+
+- Migrated the add-on to the current Home Assistant base image and GHCR build pipeline.
+- Added multi-architecture image publishing for amd64 and aarch64.
+- Added watchdog support and aligned the ingress proxy with the other maintained proxy add-ons.
+- Added CI linting and Dependabot coverage.
+
 # 1.0.7
 
 - Updated base image to Debian base 7.8.3

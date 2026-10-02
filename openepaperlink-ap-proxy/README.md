@@ -1,16 +1,18 @@
-![amd64][amd64-shield] ![armv7][armv7-shield] ![aarch64][aarch64-shield] ![armhf][armhf-shield] ![i386][i386-shield]
+![amd64][amd64-shield] ![aarch64][aarch64-shield]
 
-# OpenEpaperLink AccessPoint proxy
+# OpenEpaperLink AccessPoint Proxy
 
+This add-on exposes an OpenEpaperLink AccessPoint that runs separately from Home Assistant through Home Assistant Ingress.
 
----
+> This add-on does not run OpenEpaperLink AccessPoint itself.
 
-This add-on creates a proxy to a OpenEpaperLink AccessPoint instance running separately from Home Assistant.
+Configure the external AccessPoint as a host and port, for example:
 
-_Note: this add-on does not run OpenEpaperLink AccessPoint itself._
+```yaml
+server: openepaperlink-ap.local:80
+```
+
+The add-on supports Home Assistant OS on amd64 and aarch64.
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
-[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
-[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
