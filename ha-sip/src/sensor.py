@@ -165,6 +165,7 @@ class SensorUpdater:
             attributes["duration_seconds"] = call_info.get("duration_seconds")
             attributes["sip_status_code"] = call_info.get("sip_status_code")
             attributes["sip_reason"] = call_info.get("sip_reason")
+            attributes["outcome"] = call_info.get("outcome")
             attributes["timestamp"] = datetime.now().isoformat()
         self._update_sensor(entity_id, direction, attributes)
 
