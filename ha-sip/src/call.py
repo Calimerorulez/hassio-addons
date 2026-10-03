@@ -85,6 +85,7 @@ class Call(pj.Call):
         self.last_seen = time.time()
         self.call_settled_at: Optional[float] = None
         self.answer_at: Optional[float] = None
+        self.connected_at: Optional[float] = None
         self.call_info: Optional[webhook.CallInfo] = None
         self.pressed_digit_list: List[str] = []
         self.current_playback: Optional[ha.CurrentPlayback] = None
@@ -172,6 +173,7 @@ class Call(pj.Call):
     def handle_connected_state(self):
         log(self.account.config.index, 'Call is established.')
         self.connected = True
+        self.connected_at = time.monotonic()
         self.reset_timeout()
         self.trigger_webhook({'event': 'call_established'})
         self.handle_menu(self.menu)
@@ -192,10 +194,26 @@ class Call(pj.Call):
                 self.extract_headers_from_response(prm)
                 self.call_settled_at = time.time() + self.account.config.settle_time
             case pj.PJSIP_INV_STATE_DISCONNECTED:
-                log(self.account.config.index, 'Call disconnected')
+                sip_status_code = int(getattr(ci, 'lastStatusCode', 0) or 0)
+                sip_reason = str(getattr(ci, 'lastReason', '') or '')
+                duration_seconds = (
+                    round(max(0.0, time.monotonic() - self.connected_at), 3)
+                    if self.connected_at is not None
+                    else 0.0
+                )
+                log(
+                    self.account.config.index,
+                    f'Call disconnected: SIP {sip_status_code} {sip_reason}; duration {duration_seconds:.3f}s',
+                )
                 self.stop_recording()
-                self.trigger_webhook({'event': 'call_disconnected'})
+                self.trigger_webhook({
+                    'event': 'call_disconnected',
+                    'sip_status_code': sip_status_code,
+                    'sip_reason': sip_reason,
+                    'duration_seconds': duration_seconds,
+                })
                 self.connected = False
+                self.connected_at = None
                 self.current_input = ''
                 self.player = None
                 self.audio_media = None
@@ -223,12 +241,19 @@ class Call(pj.Call):
         self.pressed_digit_list.append(prm.digit)
 
     def handle_dtmf_digit(self, pressed_digit: str) -> None:
-        log(self.account.config.index, f'onDtmfDigit: digit {pressed_digit}')
+        pin_mode = bool(self.menu and self.menu.get('choices_are_pin'))
+        if pin_mode:
+            log(self.account.config.index, 'onDtmfDigit: digit [masked]')
+        else:
+            log(self.account.config.index, f'onDtmfDigit: digit {pressed_digit}')
         self.trigger_webhook({'event': 'dtmf_digit', 'digit': pressed_digit})
         if not self.menu:
             return
         self.current_input += pressed_digit
-        log(self.account.config.index, f'Current input: {self.current_input}')
+        if pin_mode:
+            log(self.account.config.index, f'Current PIN input: {"*" * len(self.current_input)}')
+        else:
+            log(self.account.config.index, f'Current input: {self.current_input}')
         choices = self.menu.get('choices')
         if choices is not None:
             if self.current_input in choices:
@@ -238,7 +263,7 @@ class Call(pj.Call):
                 # in PIN mode the error message will play if the input has same length than the longest PIN
                 max_choice_length = max(map(lambda choice: len(choice), choices))
                 if len(self.current_input) == max_choice_length:
-                    log(self.account.config.index, f'No PIN matched {self.current_input}')
+                    log(self.account.config.index, f'No PIN matched input of length {len(self.current_input)}')
                     self.handle_menu(self.menu['default_choice'])
             else:
                 # in normal mode the error will play as soon as the input does not match any choice
@@ -329,9 +354,13 @@ class Call(pj.Call):
         if not file_format:
             log(None, f'Error getting audio format from filename: {audio_file}')
             return
-        with open(audio_file, 'rb') as f:
-            audio_file_content = f.read()
-            sound_file_name = audio.convert_audio_stream_to_wav_file(audio_file_content, file_format)
+        try:
+            with open(audio_file, 'rb') as f:
+                audio_file_content = f.read()
+        except (OSError, IOError) as e:
+            log(self.account.config.index, f'Error reading audio file "{audio_file}": {e}')
+            return
+        sound_file_name = audio.convert_audio_stream_to_wav_file(audio_file_content, file_format)
         if not sound_file_name:
             log(None, f'Could not convert to wav: {audio_file}')
             return
@@ -348,7 +377,10 @@ class Call(pj.Call):
         else:
             log(self.account.config.index, 'Audio media not connected. Cannot play audio stream!')
         if must_be_deleted:
-            os.remove(sound_file_name)
+            try:
+                os.remove(sound_file_name)
+            except OSError as e:
+                log(self.account.config.index, f'Warning: Could not remove temporary audio file "{sound_file_name}": {e}')
 
     def on_playback_done(self) -> None:
         log(self.account.config.index, 'Playback done.')
@@ -473,7 +505,7 @@ class Call(pj.Call):
 
     def send_dtmf(self, digits: str, method: DtmfMethod = 'in_band') -> None:
         self.reset_timeout()
-        log(self.account.config.index, f'Sending DTMF {digits}')
+        log(self.account.config.index, f'Sending DTMF sequence ({len(digits)} digits)')
         if method == 'in_band':
             if not self.audio_media:
                 log(self.account.config.index, 'Audio media not connected. Cannot send DTMF in-band!')
