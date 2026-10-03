@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.9
+
+- Add call outcome classification: `completed`, `busy`, `rejected`, `no_answer`, or `failed`.
+- Add a dedicated `missed_call` event for incoming calls that never became established.
+- Add an in-memory Home Assistant call-history sensor per SIP account, retaining the latest 20 completed calls.
+- Add a Home Assistant health sensor with app version, active-call count, enabled-account count, and registered-account count.
+- Add a `clear_cache` command to remove generated cached WAV files from the configured audio cache directory.
+- Allow `start_recording` without `recording_file`; ha-sip then creates a timestamped WAV file under `/media/ha-sip`.
+- Include call outcome in the last-call sensor alongside duration and final SIP status information.
+- Track call direction per active call so simultaneous calls do not overwrite each other's direction metadata.
+- Initialize Home Assistant sensors before SIP registration begins, avoiding startup registration state being overwritten with `unknown`.
+- Keep the full per-version change history in this changelog.
+
 ## 5.8
 
 - Mask DTMF values in logs while preserving existing DTMF webhook payloads for compatibility.
