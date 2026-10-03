@@ -20,10 +20,13 @@ class SensorConfig:
 
 
 class SensorUpdater:
-    def __init__(self, ha_config: HaConfig, sensor_config: SensorConfig, enabled_accounts: List[int]):
+    def __init__(self, ha_config: HaConfig, sensor_config: SensorConfig, enabled_accounts: List[int], app_version: str = 'unknown'):
         self.ha_config = ha_config
         self.sensor_config = sensor_config
         self.enabled_accounts = enabled_accounts
+        self.app_version = app_version
+        self.registration_codes: Dict[int, int] = {}
+        self.active_calls = 0
 
     def _get_sanitized_prefix(self) -> str:
         prefix = self.sensor_config.entity_prefix.strip().lower()
@@ -43,6 +46,14 @@ class SensorUpdater:
     def _get_last_call_entity_id(self, account_index: int) -> str:
         prefix = self._get_sanitized_prefix()
         return f"sensor.{prefix}_last_call_{account_index}"
+
+    def _get_history_entity_id(self, account_index: int) -> str:
+        prefix = self._get_sanitized_prefix()
+        return f"sensor.{prefix}_call_history_{account_index}"
+
+    def _get_health_entity_id(self) -> str:
+        prefix = self._get_sanitized_prefix()
+        return f"sensor.{prefix}_health"
 
     def _get_states_url(self, entity_id: str) -> str:
         return self.ha_config.base_url + '/states/' + entity_id
@@ -98,6 +109,7 @@ class SensorUpdater:
         self._update_sensor(entity_id, "false", attributes)
 
     def update_registration_status(self, account_index: int, code: int, reason: str) -> None:
+        self.registration_codes[account_index] = code
         if not self.sensor_config.enabled:
             return
         entity_id = self._get_registration_entity_id(account_index)
@@ -119,6 +131,7 @@ class SensorUpdater:
             "last_change": datetime.now().isoformat(),
         }
         self._update_sensor(entity_id, state, attributes)
+        self.update_health()
 
     def update_last_call(
         self,
@@ -155,6 +168,48 @@ class SensorUpdater:
             attributes["timestamp"] = datetime.now().isoformat()
         self._update_sensor(entity_id, direction, attributes)
 
+    def update_call_history(self, account_index: int, calls: List[Dict[str, Any]]) -> None:
+        if not self.sensor_config.enabled:
+            return
+        entity_id = self._get_history_entity_id(account_index)
+        last = calls[0] if calls else {}
+        state = str(len(calls))
+        attributes: Dict[str, Any] = {
+            "friendly_name": f"SIP Call History {account_index}",
+            "icon": "mdi:phone-log",
+            "calls": calls,
+            "last_outcome": last.get("outcome"),
+            "last_direction": last.get("call_direction"),
+        }
+        self._update_sensor(entity_id, state, attributes)
+
+    def set_call_count_delta(self, delta: int) -> None:
+        self.active_calls = max(0, self.active_calls + delta)
+        self.update_health()
+
+    def update_health(self) -> None:
+        if not self.sensor_config.enabled:
+            return
+        enabled_count = len(self.enabled_accounts)
+        registered_count = sum(1 for account_index in self.enabled_accounts if self.registration_codes.get(account_index) == 200)
+        if enabled_count == 0:
+            state = "no_accounts"
+        elif registered_count == enabled_count:
+            state = "healthy"
+        elif registered_count == 0:
+            state = "offline"
+        else:
+            state = "degraded"
+        attributes = {
+            "friendly_name": "ha-sip Health",
+            "icon": "mdi:heart-pulse",
+            "version": self.app_version,
+            "active_calls": self.active_calls,
+            "enabled_accounts": enabled_count,
+            "registered_accounts": registered_count,
+        }
+        self._update_sensor(self._get_health_entity_id(), state, attributes)
+
     def initialize_sensors(self) -> None:
         if not self.sensor_config.enabled:
             return
@@ -170,3 +225,5 @@ class SensorUpdater:
                 }
             )
             self.update_last_call(account_index, "none")
+            self.update_call_history(account_index, [])
+        self.update_health()
