@@ -43,6 +43,9 @@ class CallEstablishedEvent(TypedDict):
 
 class CallDisconnectedEvent(TypedDict):
     event: Literal['call_disconnected']
+    sip_status_code: int
+    sip_reason: str
+    duration_seconds: float
 
 
 class EnteredMenuEvent(TypedDict):
