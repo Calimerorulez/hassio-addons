@@ -15,6 +15,7 @@ class WebhookToCall(TypedDict):
     entered_menu: Optional[str]
     dtmf_digit: Optional[str]
     call_disconnected: Optional[str]
+    missed_call: Optional[str]
     timeout: Optional[str]
     ring_timeout: Optional[str]
     playback_done: Optional[str]
