@@ -3,11 +3,14 @@ from __future__ import annotations
 import collections.abc
 import sys
 import os
+import re
 from typing import Optional, List
+from datetime import datetime
 
 import pjsua2 as pj
 
 import account
+import audio_cache
 import call
 import command_client
 import ha
@@ -226,9 +229,26 @@ class CommandHandler(object):
                     return
                 current_call = self.get_call_from_state_unsafe(number)
                 recording_file = command.get('recording_file')
-                if not recording_file or not os.path.isabs(recording_file):
-                    log(None, 'Error: Missing recording_file or path not absolute for command "start_recording"')
-                    return
+                if recording_file:
+                    if not os.path.isabs(recording_file):
+                        log(None, 'Error: recording_file path must be absolute for command "start_recording"')
+                        return
+                else:
+                    info = current_call.get_call_info()
+                    remote = info.get('parsed_remote_uri') or info.get('remote_uri') or 'unknown'
+                    safe_remote = re.sub(r'[^A-Za-z0-9_.+-]+', '_', str(remote)).strip('_') or 'unknown'
+                    timestamp = datetime.now().strftime('%Y-%m-%d_%H%M%S')
+                    recording_dir = '/media/ha-sip'
+                    try:
+                        os.makedirs(recording_dir, exist_ok=True)
+                    except OSError as e:
+                        log(None, f'Error creating automatic recording directory "{recording_dir}": {e}')
+                        return
+                    recording_file = os.path.join(
+                        recording_dir,
+                        f'{timestamp}_{current_call.direction}_{safe_remote}.wav',
+                    )
+                    log(None, f'No recording_file supplied; using "{recording_file}"')
                 current_call.start_recording(recording_file)
             case 'stop_recording':
                 if not number:
@@ -239,6 +259,8 @@ class CommandHandler(object):
                     return
                 current_call = self.get_call_from_state_unsafe(number)
                 current_call.stop_recording()
+            case 'clear_cache':
+                audio_cache.clear_cache(self.ha_config.cache_dir)
             case 'state':
                 self.call_state.output()
             case 'quit':
