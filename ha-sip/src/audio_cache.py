@@ -42,3 +42,23 @@ def get_cache_file_name(cache_dir: str, file_or_message: cache_type, file_name_o
     cache_key = hashlib.sha1(cache_key_content.encode()).hexdigest()[:10]
     file_name = cache_key + '.wav'
     return os.path.join(cache_dir, file_name)
+
+
+def clear_cache(cache_dir: Optional[str]) -> int:
+    if not cache_dir:
+        log(None, 'Warning: Cannot clear cache because no cache directory is configured.')
+        return 0
+    if not os.path.isdir(cache_dir):
+        log(None, f'Warning: Cache directory does not exist: {cache_dir}')
+        return 0
+    removed = 0
+    for entry in os.scandir(cache_dir):
+        if not entry.is_file() or not entry.name.endswith('.wav'):
+            continue
+        try:
+            os.remove(entry.path)
+            removed += 1
+        except OSError as e:
+            log(None, f'Could not remove cache file "{entry.path}": {e}')
+    log(None, f'Cleared {removed} cached audio file(s) from {cache_dir}')
+    return removed
