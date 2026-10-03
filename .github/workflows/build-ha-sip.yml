@@ -23,26 +23,13 @@ env:
 
 jobs:
   build:
-    name: Build ${{ matrix.arch }}
+    name: Build amd64
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - arch: amd64
-            platform: linux/amd64
-            build_from: ghcr.io/hassio-addons/debian-base/amd64:stable
-          - arch: aarch64
-            platform: linux/arm64
-            build_from: ghcr.io/hassio-addons/debian-base/aarch64:stable
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v7.0.1
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -53,40 +40,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push architecture image
+      - name: Build and push amd64 image
         uses: docker/build-push-action@v6
         with:
           context: ./ha-sip
           file: ./ha-sip/Dockerfile
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64
           push: true
           build-args: |
-            BUILD_FROM=${{ matrix.build_from }}
+            BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:stable
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}-${{ matrix.arch }}
-            ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}-${{ matrix.arch }}
-
-  manifest:
-    name: Publish multi-arch manifest
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish version and latest manifests
-        shell: bash
-        run: |
-          docker buildx imagetools create \
-            --tag "${IMAGE_NAME}:${IMAGE_VERSION}" \
-            --tag "${IMAGE_NAME}:latest" \
-            "${IMAGE_NAME}:${IMAGE_VERSION}-amd64" \
-            "${IMAGE_NAME}:${IMAGE_VERSION}-aarch64"
+            ${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
