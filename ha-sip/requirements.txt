@@ -1,0 +1,7 @@
+requests
+PyYAML
+typing_extensions
+python-dotenv
+paho-mqtt
+setuptools
+websockets
