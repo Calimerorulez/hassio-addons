@@ -1,6 +1,7 @@
 from typing import Union, Literal, Optional
 import hashlib
 import os
+import re
 import shutil
 
 from log import log
@@ -53,7 +54,7 @@ def clear_cache(cache_dir: Optional[str]) -> int:
         return 0
     removed = 0
     for entry in os.scandir(cache_dir):
-        if not entry.is_file() or not entry.name.endswith('.wav'):
+        if not entry.is_file() or not re.fullmatch(r'[0-9a-f]{10}\.wav', entry.name):
             continue
         try:
             os.remove(entry.path)
