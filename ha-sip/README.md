@@ -12,6 +12,8 @@
 - record calls into .wav files
 - [speak to Home Assistant Voice Assist without special hardware](VOICE-ASSISTANT.md)
 
+See the [Version history](CHANGELOG.md) for the complete per-version change log.
+
 ## Installation
 
 [![Open your Home Assistant instance and show the add app repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FCalimerorulez%2Fhassio-addons)
@@ -289,11 +291,26 @@ data:
     input:
         command: start_recording
         number: sip:**620@fritz.box
-        recording_file: "/config/www/call_12345.wav" # must be an absolute path
+        recording_file: "/config/www/call_12345.wav" # optional; must be an absolute path
 ```
+
+If `recording_file` is omitted, ha-sip creates a timestamped file automatically in `/media/ha-sip`, for example
+`2026-10-03_093000_incoming_0612345678.wav`.
 
 > **Note:**
 > The recording is stopped when the call ends.
+
+#### To clear the audio cache
+
+```yaml
+service: hassio.addon_stdin
+data:
+    addon: c7744bff_ha-sip
+    input:
+        command: clear_cache
+```
+
+This removes generated `.wav` cache files from the configured `cache_dir`.
 
 #### To stop a call recording
 
@@ -880,3 +897,12 @@ If you find this maintained fork helpful, you can star this repository on GitHub
    ```json
    { "command": "dial", "number": "sip:**620@fritz.box", "menu": { "message": "Hello from ha-sip.", "language": "en" } }
    ```
+
+
+### Call diagnostics in 5.9
+
+The `call_disconnected` event now includes `duration_seconds`, `sip_status_code`, `sip_reason`, and an `outcome` value. Outcomes are one of `completed`, `busy`, `rejected`, `no_answer`, or `failed`.
+
+Incoming calls that never become established also emit a separate `missed_call` event.
+
+When Home Assistant sensors are enabled, ha-sip also exposes a per-account last-call sensor, a 20-entry in-memory call-history sensor, and a health sensor with registration counts, active calls, and the running app version.
