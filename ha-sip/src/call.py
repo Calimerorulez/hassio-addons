@@ -16,6 +16,7 @@ import ha
 import player
 import webhook
 from call_state_change import CallStateChange
+from call_outcome import classify_call_outcome
 from command_client import Command
 from command_handler import CommandHandler
 from constants import DEFAULT_RING_TIMEOUT, DEFAULT_DTMF_ON
@@ -196,22 +197,33 @@ class Call(pj.Call):
             case pj.PJSIP_INV_STATE_DISCONNECTED:
                 sip_status_code = int(getattr(ci, 'lastStatusCode', 0) or 0)
                 sip_reason = str(getattr(ci, 'lastReason', '') or '')
+                was_established = self.connected_at is not None
                 duration_seconds = (
                     round(max(0.0, time.monotonic() - self.connected_at), 3)
-                    if self.connected_at is not None
+                    if was_established and self.connected_at is not None
                     else 0.0
                 )
+                outcome = classify_call_outcome(was_established, sip_status_code)
                 log(
                     self.account.config.index,
-                    f'Call disconnected: SIP {sip_status_code} {sip_reason}; duration {duration_seconds:.3f}s',
+                    f'Call disconnected: SIP {sip_status_code} {sip_reason}; outcome {outcome}; duration {duration_seconds:.3f}s',
                 )
                 self.stop_recording()
-                self.trigger_webhook({
+                disconnect_event = {
                     'event': 'call_disconnected',
                     'sip_status_code': sip_status_code,
                     'sip_reason': sip_reason,
                     'duration_seconds': duration_seconds,
-                })
+                    'outcome': outcome,
+                }
+                if self.direction == 'incoming' and not was_established:
+                    self.trigger_webhook({
+                        'event': 'missed_call',
+                        'sip_status_code': sip_status_code,
+                        'sip_reason': sip_reason,
+                        'outcome': outcome,
+                    })
+                self.trigger_webhook(disconnect_event)
                 self.connected = False
                 self.connected_at = None
                 self.current_input = ''
