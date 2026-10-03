@@ -165,6 +165,8 @@ def main():
     )
     enabled_account_indices = [key for key, acc in account_configs.items() if acc.enabled]
     sensor_updater = SensorUpdater(ha_config, sensor_config, enabled_account_indices, config.APP_VERSION)
+    sensor_updater.initialize_sensors()
+
     def on_reg_state_callback(account_index: int, code: int, reason: str) -> None:
         sensor_updater.update_registration_status(account_index, code, reason)
 
@@ -191,7 +193,6 @@ def main():
     event_sender.register_sender(send_mqtt_event)
     sensor_event_handler = SensorEventHandler(sensor_updater)
     event_sender.register_sender(sensor_event_handler.handle_event)
-    sensor_updater.initialize_sensors()
     while True:
         if mqtt_client:
             mqtt_client.handle()
