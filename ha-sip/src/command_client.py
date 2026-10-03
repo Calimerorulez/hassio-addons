@@ -75,7 +75,7 @@ class CommandStopPlayback(TypedDict):
 class CommandStartRecording(TypedDict):
     command: Literal['start_recording']
     number: str
-    recording_file: str
+    recording_file: Optional[str]
 
 
 class CommandStopRecording(TypedDict):
@@ -103,6 +103,10 @@ class CommandPlayAudioFile(TypedDict):
     post_action: Optional[PostActionHangup]
 
 
+class CommandClearCache(TypedDict):
+    command: Literal['clear_cache']
+
+
 class CommandState(TypedDict):
     command: Literal['state']
 
@@ -124,6 +128,7 @@ Command = Union[
     CommandStopRecording,
     CommandPlayMessage,
     CommandPlayAudioFile,
+    CommandClearCache,
     CommandState,
     CommandQuit,
 ]
