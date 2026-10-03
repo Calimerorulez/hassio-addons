@@ -164,7 +164,7 @@ def main():
         entity_prefix=sensor_entity_prefix,
     )
     enabled_account_indices = [key for key, acc in account_configs.items() if acc.enabled]
-    sensor_updater = SensorUpdater(ha_config, sensor_config, enabled_account_indices)
+    sensor_updater = SensorUpdater(ha_config, sensor_config, enabled_account_indices, config.APP_VERSION)
     def on_reg_state_callback(account_index: int, code: int, reason: str) -> None:
         sensor_updater.update_registration_status(account_index, code, reason)
 
