@@ -9,8 +9,8 @@ from sensor import SensorUpdater
 class SensorEventHandler:
     def __init__(self, sensor_updater: SensorUpdater):
         self.sensor_updater = sensor_updater
-        # Track call direction per account: account_index -> "incoming" or "outgoing"
-        self.call_directions: Dict[int, str] = {}
+        # Track call direction per active call.
+        self.call_directions: Dict[str, str] = {}
         self.active_call_ids: set[str] = set()
         self.call_history: Dict[int, list[Dict[str, Any]]] = {}
 
@@ -20,14 +20,15 @@ class SensorEventHandler:
         if sip_account is None:
             return
         internal_id = event.get("internal_id")
+        direction_key = internal_id or f"account:{sip_account}"
         if event_type == "incoming_call":
-            self.call_directions[sip_account] = "incoming"
+            self.call_directions[direction_key] = "incoming"
             self.sensor_updater.set_call_active(sip_account, event)
             if internal_id and internal_id not in self.active_call_ids:
                 self.active_call_ids.add(internal_id)
                 self.sensor_updater.set_call_count_delta(1)
         elif event_type == "outgoing_call_initiated":
-            self.call_directions[sip_account] = "outgoing"
+            self.call_directions[direction_key] = "outgoing"
             if internal_id and internal_id not in self.active_call_ids:
                 self.active_call_ids.add(internal_id)
                 self.sensor_updater.set_call_count_delta(1)
@@ -38,7 +39,7 @@ class SensorEventHandler:
             if internal_id and internal_id in self.active_call_ids:
                 self.active_call_ids.remove(internal_id)
                 self.sensor_updater.set_call_count_delta(-1)
-            direction = self.call_directions.pop(sip_account, event.get("call_direction", "incoming"))
+            direction = self.call_directions.pop(direction_key, event.get("call_direction", "incoming"))
             self.sensor_updater.update_last_call(sip_account, direction, event)
             history = self.call_history.setdefault(sip_account, [])
             history_entry = {
