@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.8
+
+- Mask DTMF values in logs while preserving existing DTMF webhook payloads for compatibility.
+- Add call duration, final SIP status code and SIP reason to the `call_disconnected` event.
+- Add duration and disconnect diagnostics to the last-call Home Assistant sensor.
+- Sanitize sensor entity prefixes so generated entity IDs remain valid.
+- Handle missing or unreadable audio files without breaking the call flow.
+- Make temporary audio-file cleanup resilient to filesystem errors.
+- Avoid logging outgoing DTMF digits in plaintext.
+- Add regression tests for sensor entity prefix sanitization.
+
 ## 5.7
 
 - Use the Calimerorulez GHCR image for the maintained fork.
