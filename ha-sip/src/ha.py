@@ -46,6 +46,14 @@ class CallDisconnectedEvent(TypedDict):
     sip_status_code: int
     sip_reason: str
     duration_seconds: float
+    outcome: str
+
+
+class MissedCallEvent(TypedDict):
+    event: Literal['missed_call']
+    sip_status_code: int
+    sip_reason: str
+    outcome: str
 
 
 class EnteredMenuEvent(TypedDict):
@@ -98,6 +106,7 @@ WebhookEvent = Union[
     OutgoingCallInitiatedEvent,
     CallEstablishedEvent,
     CallDisconnectedEvent,
+    MissedCallEvent,
     EnteredMenuEvent,
     DtmfDigitEvent,
     Timeout,
