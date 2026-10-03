@@ -19,7 +19,7 @@ concurrency:
 
 env:
   IMAGE_NAME: ghcr.io/calimerorulez/ha-sip
-  IMAGE_VERSION: "5.8"
+  IMAGE_VERSION: "5.9"
 
 jobs:
   build:
