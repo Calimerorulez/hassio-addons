@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 
@@ -25,7 +26,10 @@ class SensorUpdater:
         self.enabled_accounts = enabled_accounts
 
     def _get_sanitized_prefix(self) -> str:
-        return self.sensor_config.entity_prefix.replace('-', '_').lower()
+        prefix = self.sensor_config.entity_prefix.strip().lower()
+        prefix = re.sub(r'[^a-z0-9_]+', '_', prefix)
+        prefix = re.sub(r'_+', '_', prefix).strip('_')
+        return prefix or 'ha_sip'
 
     def _get_entity_id(self, account_index: int) -> str:
         # Sanitize prefix: replace hyphens with underscores, lowercase only
@@ -145,6 +149,9 @@ class SensorUpdater:
             attributes["parsed_remote_uri"] = call_info.get("parsed_remote_uri")
             attributes["parsed_local_uri"] = call_info.get("parsed_local_uri")
             attributes["call_id"] = call_info.get("call_id")
+            attributes["duration_seconds"] = call_info.get("duration_seconds")
+            attributes["sip_status_code"] = call_info.get("sip_status_code")
+            attributes["sip_reason"] = call_info.get("sip_reason")
             attributes["timestamp"] = datetime.now().isoformat()
         self._update_sensor(entity_id, direction, attributes)
 
