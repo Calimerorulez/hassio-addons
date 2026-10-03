@@ -1,3 +1,5 @@
+APP_VERSION = '5.9'
+
 import os
 
 from dotenv import load_dotenv
